@@ -1,17 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { BrowserRouter as Router } from 'react-router-dom';
-import BASE_URL from './endpoint'
-import CharacterList from './CharacterList';
 
-import { useFetch, useFetchAsync } from './hooks/useFetch';
+import CharacterList from './CharacterList';
+import { useFetchCharacters } from './hooks/useFetchCharacters'
 
 import './styles.scss';
 
 const Application = () => {
 
-  const [loading, error, characters] = useFetch(`${BASE_URL}/characters`)
+  const [loading, characters, error] = useFetchCharacters();
 
   return (
     <div className="Application">

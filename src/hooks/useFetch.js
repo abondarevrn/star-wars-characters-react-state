@@ -1,17 +1,17 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, useCallback } from 'react';
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
     loading: false,
     response: [],
     error: null
 }
 
-const FETCH_LOADING = 'FETCH_LOADING';
-const FETCH_COMPLETED = 'FETCH_COMPLETED';
-const FETCH_ERROR = 'FETCH_ERROR';
+export const FETCH_LOADING = 'FETCH_LOADING';
+export const FETCH_COMPLETED = 'FETCH_COMPLETED';
+export const FETCH_ERROR = 'FETCH_ERROR';
 
-const fetchReducer = (state, action) => {
-    if (action.type == FETCH_LOADING) {
+export const fetchReducer = (state, action) => {
+    if (action.type === FETCH_LOADING) {
         return {
             loading: true,
             response: null,
@@ -19,7 +19,7 @@ const fetchReducer = (state, action) => {
         }
     }
 
-    if (action.type == FETCH_COMPLETED) {
+    if (action.type === FETCH_COMPLETED) {
         return {
             loading: false,
             response: action.payload.response,
@@ -27,10 +27,10 @@ const fetchReducer = (state, action) => {
         }
     }
 
-    if (action.type == FETCH_ERROR) {
+    if (action.type === FETCH_ERROR) {
         return {
             loading: false,
-            response: null,
+            response: [],
             error: action.payload.error
         }
     }
@@ -55,7 +55,7 @@ export const useFetch = (url) => {
             .catch((error) => {
                 dispatch({ type: FETCH_ERROR, payload: { error } })
             })
-    }, [])
+    }, [url])
 
     return [loading, error, response]
 }
@@ -65,7 +65,7 @@ export const useFetchAsync = (url) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    const fetchAsync = async () => {
+    const fetchAsync = useCallback(async () => {
         try {
             const response = await fetch(url)
             const data = await response.json()
@@ -75,7 +75,7 @@ export const useFetchAsync = (url) => {
         } finally {
             setLoading(false)
         }
-    }
+    }, [url])
 
     useEffect(() => {
         setLoading(true);
@@ -84,7 +84,7 @@ export const useFetchAsync = (url) => {
 
         fetchAsync()
 
-    }, [])
+    }, [fetchAsync])
 
     return [loading, error, response]
 }
