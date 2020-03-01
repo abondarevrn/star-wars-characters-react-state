@@ -31,7 +31,16 @@ export const useFetchCharacters = () => {
     const { loading, response: characters, error } = state;
 
     useEffect(() => {
-        fetchCharacters(dispatch)
+
+        // THUNK IS FOR A BETTER VISUAL CODING OF WHAT IS ACTUALLY GOING ON
+        // NOT CLEAR -----> fetchCharacters(dispatch)
+
+        // MORE CLARITY and additionally if you want to pass parameters is even more clear
+        // than doing -------> fetchCharacters(dispatch, objectOfParams)
+        // EVEN MORE we are actually extending the functionality of dispatch instead of passing the basic functionality around
+
+        dispatch(fetchCharacters)
+
     }, [dispatch])
 
     return [loading, characters, error]

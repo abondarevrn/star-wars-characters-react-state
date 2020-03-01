@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import CharacterList from './CharacterList';
+import CharacterView from './CharacterView';
+
 import { useFetchCharacters } from './hooks/useFetchCharacters'
 
 import './styles.scss';
@@ -20,6 +22,9 @@ const Application = () => {
         <section className="sidebar">
           {loading ? <span>Loading....</span> : <CharacterList characters={characters} />}
           {error && <span>{error}</span>}
+        </section>
+        <section className="CharacterView">
+          <Route path="/characters/:id" component={CharacterView} />
         </section>
       </main>
     </div>
